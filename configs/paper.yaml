@@ -1,0 +1,38 @@
+method: CU-RECAP
+
+base:
+  policy: openpi_pi05
+  post_training: RECAP
+  recap_repo: Destiny000621/RECAP
+
+utility:
+  update_scope: lora_only
+  temporary_step_size: 1.0e-4
+  target: one_step_probe_gain
+  proxy: first_order_gradient_alignment
+  hard_probe_buffer_size: 512
+  hard_probe_refresh_every_iterations: 1
+
+critic:
+  history_len: 4
+  ensemble_size: 5
+  utility_target: one_step_probe_gain
+  ipw:
+    propensity_clip_min: 0.05
+    max_weight: 10.0
+
+acquisition:
+  beta_ucb: 1.0
+  stochastic_temperature: 0.25
+  min_propensity: 0.05
+  max_propensity: 0.95
+  safety_risk_threshold: 0.95
+  budget_unit: human_control_seconds
+
+robot:
+  platform: Tianyi_2.0
+  hand_abstraction: binary_open_close
+
+recap:
+  lookahead: 50
+  value_bins: 201
